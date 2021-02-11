@@ -1,0 +1,21 @@
+version: '2.1'
+
+services:
+  mariadb:
+    hostname: mariadb
+    image: 'bitnami/mariadb:latest'
+    ports:
+      - '3306:3306'
+    environment:
+      - ALLOW_EMPTY_PASSWORD=yes
+    healthcheck:
+      test: ['CMD', '/opt/bitnami/scripts/mariadb/healthcheck.sh']
+      interval: 15s
+      timeout: 5s
+      retries: 6
+
+  example-app:
+    build:
+      context: .
+    depends_on:
+      - mariadb
